@@ -137,6 +137,11 @@ for index, emotion in enumerate(EMOTIONS):
 
 while 1:
     ret, frame = cap.read()
+
+    # Quit when the input video file ends
+    if not ret:
+        break
+
     facecasc = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     faces = facecasc.detectMultiScale(gray, 1.3, 5)
