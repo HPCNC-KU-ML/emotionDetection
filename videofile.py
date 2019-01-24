@@ -8,6 +8,9 @@ cv2.ocl.setUseOpenCL(False)
 
 EMOTIONS = ['angry', 'happy', 'neutral', 'sad', 'scared']
 
+data = {}
+data['emotion'] = []
+
 
 def format_image(image):
     """
@@ -60,12 +63,19 @@ name = './' + name
 
 cap = cv2.VideoCapture(name)
 
+length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+frame_number = 0
+fps = cap.get(cv2.CAP_PROP_FPS)
+duration = length/fps
+
+sum = [0, 0, 0, 0, 0, 0, 0]
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 feelings_faces = []
 
 frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
+
 
 # Output file
 out = cv2.VideoWriter('output.avi', cv2.VideoWriter_fourcc(
@@ -75,68 +85,10 @@ out = cv2.VideoWriter('output.avi', cv2.VideoWriter_fourcc(
 for index, emotion in enumerate(EMOTIONS):
     feelings_faces.append(cv2.imread('./emojis/' + emotion + '.png', -1))
 
-# while True:
-#     # Again find haar cascade to draw bounding box around face
-
-#     ret, frame = cap.read()
-#     facecasc = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-#     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-#     faces = facecasc.detectMultiScale(gray, 1.3, 5)
-#     new_frame = format_image(frame)
-#     if(len(new_frame) == 48):
-#         print(network.predict([new_frame]))
-
-#     # compute softmax probabilities
-#     if(len(new_frame) == 48):
-#         result = network.predict([format_image(frame)])
-#     else:
-#         result = None
-
-#     if result is not None:
-#         # write the different emotions and have a bar to indicate probabilities for each class
-#         for index, emotion in enumerate(EMOTIONS):
-#             cv2.putText(frame, emotion, (10, index * 20 + 20),
-#                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
-#             cv2.rectangle(frame, (130, index * 20 + 10), (130 +
-#                                                           int(result[0][index] * 100), (index + 1) * 20 + 4), (255, 0, 0), -1)
-
-#         # find the emotion with maximum probability and display it
-
-#         maxindex = np.argmax(result[0])
-
-#         font = cv2.FONT_HERSHEY_SIMPLEX
-#         cv2.putText(frame, EMOTIONS[maxindex], (10, 360),
-#                     font, 2, (255, 255, 255), 2, cv2.LINE_AA)
-#         face_image = feelings_faces[maxindex]
-
-#         for c in range(0, 3):
-#             # The shape of face_image is (x,y,4). The fourth channel is 0 or 1. In most cases it is 0, so, we assign the roi to the emoji.
-#             # You could also do: frame[200:320,10:130,c] = frame[200:320, 10:130, c] * (1.0 - face_image[:, :, 3] / 255.0)
-#             frame[200:320, 10:130, c] = face_image[:, :, c] * \
-#                 (face_image[:, :, 3] / 255.0) + frame[200:320,
-#                                                       10:130, c] * (1.0 - face_image[:, :, 3] / 255.0)
-
-#     if len(faces) > 0:
-#         # draw box around faces
-#         for face in faces:
-#             (x, y, w, h) = face
-#             frame = cv2.rectangle(
-#                 frame, (x, y-30), (x+w, y+h+10), (255, 0, 0), 2)
-#             newimg = frame[y:y+h, x:x+w]
-#             newimg = cv2.resize(
-#                 newimg, (48, 48), interpolation=cv2.INTER_CUBIC) / 255.
-#             result = network.predict(newimg)
-#     out.write(frame)
-# #     cv2.imshow('Video', cv2.resize(frame, None, fx=2,
-# #                                    fy=2, interpolation=cv2.INTER_CUBIC))
-#     if cv2.waitKey(1) & 0xFF == ord('q'):
-#         break
-
-# cap.release()
-# cv2.destroyAllWindows()
 
 while 1:
     ret, frame = cap.read()
+    frame_number += 1
 
     # Quit when the input video file ends
     if not ret:
@@ -167,6 +119,19 @@ while 1:
         # find the emotion with maximum probability and display it
 
         maxindex = np.argmax(result[0])
+        sum[maxindex] += 1
+        # print(sum)
+
+        if(frame_number % (int(fps)/4) == 0):
+            maxindex2 = np.argmax(sum)
+            sum = [0, 0, 0, 0, 0, 0, 0]
+            print('time :{} emotion {}'.format(
+                frame_number/fps, EMOTIONS[maxindex2]))
+
+            data['emotion'].append({
+                'emotion': EMOTIONS[maxindex2],
+                'time': str(frame_number/fps)
+            })
 
         font = cv2.FONT_HERSHEY_SIMPLEX
         cv2.putText(frame, EMOTIONS[maxindex], (10, 360),
@@ -189,6 +154,11 @@ while 1:
                 newimg, (48, 48), interpolation=cv2.INTER_CUBIC) / 255.
 #             result = model.predict(newimg)
     # out.write(frame)
+
+    # print("Writing frame {} / {}".format(frame_number, length))
+
+    # print("time {}/{}".format(frame_number/fps, duration))
+
     cv2.imshow('Video', cv2.resize(frame, None, fx=2,
                                    fy=2, interpolation=cv2.INTER_CUBIC))
     if cv2.waitKey(1) & 0xFF == ord('q'):
