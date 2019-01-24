@@ -24,4 +24,5 @@ consider the output image from last program in each emotion and copy image to im
 
 
 thank you for https://github.com/ahmetozlu/face_recognition_crop
+
 and paper from https://github.com/isseu/emotion-recognition-neural-networks/blob/master/paper/Report_NN.pdf
