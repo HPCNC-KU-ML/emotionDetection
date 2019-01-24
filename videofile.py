@@ -68,7 +68,7 @@ frame_number = 0
 fps = cap.get(cv2.CAP_PROP_FPS)
 duration = length/fps
 
-sum = [0, 0, 0, 0, 0, 0, 0]
+sum = [0, 0, 0, 0, 0]
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 feelings_faces = []
@@ -122,9 +122,9 @@ while 1:
         sum[maxindex] += 1
         # print(sum)
 
-        if(frame_number % (int(fps)/4) == 0):
+        if(frame_number % (int(fps/4)) == 0):
             maxindex2 = np.argmax(sum)
-            sum = [0, 0, 0, 0, 0, 0, 0]
+            sum = [0, 0, 0, 0, 0]
             print('time :{} emotion {}'.format(
                 frame_number/fps, EMOTIONS[maxindex2]))
 
@@ -166,3 +166,6 @@ while 1:
 
 cap.release()
 cv2.destroyAllWindows()
+
+with open('data.json', 'w') as outfile:
+    json.dump(data, outfile)

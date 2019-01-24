@@ -15,7 +15,7 @@ import glob
 import cv2
 import sys
 
-epoch = 200
+epoch = 100
 
 # prevents appearance of tensorflow warnings
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -190,9 +190,10 @@ testing_data = np.array(testing_data)
 testing_labels = np.array(testing_labels)
 
 # Load Model
-# model.load('test083.tflearn')
-
-
+if isfile('model.tflearn.meta'):
+    model.load('model.tflearn')
+else:
+    print('can not see last model')
 # Training
 model.fit(training_data, training_labels, n_epoch=epoch,
           validation_set=(testing_data, testing_labels), snapshot_step=200)

@@ -76,10 +76,6 @@ class EMR:
             self.model.load('model.tflearn')
         else:
             print("---> Couldn't find model")
-        # if isfile("model/test1.model.meta"):
-        #     self.model.load("model/test1.model")
-        # else:
-        #     print("---> Couldn't find model")
 
 
 if __name__ == "__main__":
