@@ -15,7 +15,8 @@ import glob
 import cv2
 import sys
 
-epoch = 100
+# epoch =
+epoch = int(input('input epoch : '))
 
 # prevents appearance of tensorflow warnings
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -199,7 +200,7 @@ model.fit(training_data, training_labels, n_epoch=epoch,
           validation_set=(testing_data, testing_labels), snapshot_step=200)
 
 # Save Model
-model.save('model.tflearn')
+model.save('model_' + str(epoch)+'.tflearn')
 
 
 # Evaluate Model

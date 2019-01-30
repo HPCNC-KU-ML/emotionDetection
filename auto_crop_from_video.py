@@ -5,15 +5,36 @@ import cv2
 import os
 from utils import create_csv
 
+
+current_path = os.getcwd()
+
 # Open the input movie file
-input_movie = cv2.VideoCapture(sys.argv[1])
+video_name = input('input video name in video dir (sam1.mp4) : ')
+video_name
+video_des = 'video/'+video_name
+
+input_movie = cv2.VideoCapture(video_des)
 length = int(input_movie.get(cv2.CAP_PROP_FRAME_COUNT))
 
+char1 = input('1st charactor picture file(ester.jpg) : ')
+char2 = input('2nd charactor picture file(bie.jpg) : ')
+
+char_des1 = './charactor/' + char1
+char_des2 = './charactor/' + char2
+
+name1 = char1.split('.')[0]
+name2 = char2.split('.')[0]
+if not os.path.exists("./face_database/" + name2):
+    os.mkdir("./face_database/" + name2)
+if not os.path.exists("./face_database/" + name1):
+    os.mkdir("./face_database/" + name1)
+
+
 # Load some sample pictures and learn how to recognize them.
-lmm_image = face_recognition.load_image_file("ester.jpg")
+lmm_image = face_recognition.load_image_file(char_des1)
 lmm_face_encoding = face_recognition.face_encodings(lmm_image)[0]
 
-al_image = face_recognition.load_image_file("bie.jpg")
+al_image = face_recognition.load_image_file(char_des2)
 al_face_encoding = face_recognition.face_encodings(al_image)[0]
 
 
@@ -28,10 +49,9 @@ face_encodings = []
 face_names = []
 frame_number = 0
 
-current_path = os.getcwd()
 
-counbie = 0
-counbie1 = 0
+count = 0
+count1 = 0
 
 while True:
     # Grab a single frame of video
@@ -41,7 +61,7 @@ while True:
     # Quit when the input video file ends
     if not ret:
         break
-    if(frame_number % 8 == 0):
+    if(frame_number % 4 == 0):
         # Find all the faces and face encodings in the current frame of video
         face_locations = face_recognition.face_locations(frame)
         face_encodings = face_recognition.face_encodings(frame, face_locations)
@@ -56,9 +76,9 @@ while True:
             # but I kept it simple for the demo
             name = None
             if match[0]:
-                name = "ester"
+                name = name1
             elif match[1]:
-                name = "bie"
+                name = name2
 
             face_names.append(name)
 
@@ -72,16 +92,15 @@ while True:
                           (right+22, bottom+32), (0, 0, 255), 2)
 
             crop_img = frame[top-40:bottom+30, left-20:right+20]
-            if(name == "ester"):
-                cv2.imwrite("./face_database/ester/" + "ester" + sys.argv[1] +
-                            str(counbie)+".png", crop_img)
-                counbie = counbie + 1
+            if(name == name1):
+                cv2.imwrite("./face_database/" + name1 + "/" + name1 + video_name.split('.')[0] +
+                            str(count)+".png", crop_img)
+                count = count + 1
 
-            elif(name == "bie"):
-                cv2.imwrite("./face_database/bie/" + sys.argv[1] +
-                            "bie"+str(counbie1)+".png", crop_img)
-                counbie1 = counbie1 + 1
-
+            elif(name == name2):
+                cv2.imwrite("./face_database/" + name2 + "/" + name2 + video_name.split('.')[0] +
+                            str(count)+".png", crop_img)
+                count1 = count1 + 1
             # Draw a label with a name below the face
             cv2.rectangle(frame, (left-10, bottom+10 - 35),
                           (right+10, bottom+10), (0, 0, 255), cv2.FILLED)

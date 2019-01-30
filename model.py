@@ -72,15 +72,16 @@ class EMR:
         return self.model.predict(image)
 
     def load_model(self):
-        if isfile('model.tflearn.meta'):
-            self.model.load('model.tflearn')
+        if isfile('model.tflearn30.meta'):
+            self.model.load('model.tflearn30')
         else:
             print("---> Couldn't find model")
+            # change to argv
 
 
 if __name__ == "__main__":
     print("\n------------Emotion Detection Program------------\n")
-    network = EMR()
+    # network = EMR()
     if(sys.argv[1] == 'videofile'):
         import videofile
     elif(sys.argv[1] == 'jsonfile'):
