@@ -15,8 +15,10 @@ import glob
 import cv2
 import sys
 
+from model import EMR
+
 # epoch =
-epoch = int(input('input epoch : '))
+# epoch = int(input('input epoch : '))
 
 # prevents appearance of tensorflow warnings
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -142,67 +144,82 @@ def format_image(image):
     return output
 
 
-# Create NN Model
-network = tflearn.input_data(shape=[None, 48, 48, 1])
-print("Input data     ", network.shape[1:])
-
-
-network = conv_2d(network, 64, 5, activation='relu')
-print("Conv1          ", network.shape[1:])
-
-network = max_pool_2d(network, 3, strides=2)
-print("Maxpool1       ", network.shape[1:])
-
-
-network = conv_2d(network, 64, 5, activation='relu')
-print("Conv2          ", network.shape[1:])
-
-network = max_pool_2d(network, 3, strides=2)
-print("Maxpool2       ", network.shape[1:])
-
-
-network = conv_2d(network, 128, 4, activation='relu')
-print("Conv3          ", network.shape[1:])
-
-network = fully_connected(network, 3072, activation='relu')
-print("Fully connected", network.shape[1:])
-
-network = fully_connected(network, len(target_classes), activation='softmax')
-print("Output         ", network.shape[1:])
-# Generates a TrainOp which contains the information about optimization process - optimizer, loss function, etc
-
-# # Generates a TrainOp which contains the information about optimization process - optimizer, loss function, etc
-
-
-network = regression(network, optimizer='momentum',
-                     metric='accuracy', loss='categorical_crossentropy')
-
-# Creates a model instance.
-model = tflearn.DNN(network)
-
-# Create Training set and Testing Set
+# # Create Training set and Testing Set
 training_data, training_labels, testing_data, testing_labels = make_sets()
 
-# Convert to numpy array
+# # Convert to numpy array
 training_data = np.array(training_data)
 training_labels = np.array(training_labels)
 
 testing_data = np.array(testing_data)
 testing_labels = np.array(testing_labels)
 
-# Load Model
-if isfile('model.tflearn.meta'):
-    model.load('model.tflearn')
-else:
-    print('can not see last model')
-# Training
-model.fit(training_data, training_labels, n_epoch=epoch,
-          validation_set=(testing_data, testing_labels), snapshot_step=200)
+network = EMR()
+network.build_network()
 
-# Save Model
-model.save('model_' + str(epoch)+'.tflearn')
+network.train(training_data, training_labels, testing_data, testing_labels)
+
+# # Create NN Model
+# network = tflearn.input_data(shape=[None, 48, 48, 1])
+# print("Input data     ", network.shape[1:])
 
 
-# Evaluate Model
-print('accuracy : ', model.evaluate(testing_data, testing_labels))
-# model.evaluate(testing_data, testing_labels)
+# network = conv_2d(network, 64, 5, activation='relu')
+# print("Conv1          ", network.shape[1:])
+
+# network = max_pool_2d(network, 3, strides=2)
+# print("Maxpool1       ", network.shape[1:])
+
+
+# network = conv_2d(network, 64, 5, activation='relu')
+# print("Conv2          ", network.shape[1:])
+
+# network = max_pool_2d(network, 3, strides=2)
+# print("Maxpool2       ", network.shape[1:])
+
+
+# network = conv_2d(network, 128, 4, activation='relu')
+# print("Conv3          ", network.shape[1:])
+
+# network = fully_connected(network, 3072, activation='relu')
+# print("Fully connected", network.shape[1:])
+
+# network = fully_connected(network, len(target_classes), activation='softmax')
+# print("Output         ", network.shape[1:])
+# # Generates a TrainOp which contains the information about optimization process - optimizer, loss function, etc
+
+# # # Generates a TrainOp which contains the information about optimization process - optimizer, loss function, etc
+
+
+# network = regression(network, optimizer='momentum',
+#                      metric='accuracy', loss='categorical_crossentropy')
+
+# # Creates a model instance.
+# model = tflearn.DNN(network)
+
+# # Create Training set and Testing Set
+# training_data, training_labels, testing_data, testing_labels = make_sets()
+
+# # Convert to numpy array
+# training_data = np.array(training_data)
+# training_labels = np.array(training_labels)
+
+# testing_data = np.array(testing_data)
+# testing_labels = np.array(testing_labels)
+
+# # Load Model
+# if isfile('model.tflearn.meta'):
+#     model.load('model.tflearn')
+# else:
+#     print('can not see last model')
+# # Training
+# model.fit(training_data, training_labels, n_epoch=epoch,
+#           validation_set=(testing_data, testing_labels), snapshot_step=200)
+
+# # Save Model
+# model.save('model_' + str(epoch)+'.tflearn')
+
+
+# # Evaluate Model
+# print('accuracy : ', model.evaluate(testing_data, testing_labels))
+# # model.evaluate(testing_data, testing_labels)

@@ -8,8 +8,8 @@ cv2.ocl.setUseOpenCL(False)
 
 EMOTIONS = ['angry', 'happy', 'neutral', 'sad', 'scared']
 
-# data = {}
-# data['emotion'] = []
+data = {}
+data['emotion'] = []
 
 
 def format_image(image):
@@ -131,10 +131,10 @@ while 1:
             print('time :{} emotion {}'.format(
                 frame_number/fps, EMOTIONS[maxindex2]))
 
-            # data['emotion'].append({
-            #     'emotion': EMOTIONS[maxindex2],
-            #     'time': str(frame_number/fps)
-            # })
+            data['emotion'].append({
+                'emotion': EMOTIONS[maxindex2],
+                'time': str(frame_number/fps)
+            })
 
         font = cv2.FONT_HERSHEY_SIMPLEX
         cv2.putText(frame, EMOTIONS[maxindex], (10, 360),
@@ -160,3 +160,6 @@ while 1:
 
 cap.release()
 cv2.destroyAllWindows()
+
+with open('data.json', 'w') as outfile:
+    json.dump(data, outfile)

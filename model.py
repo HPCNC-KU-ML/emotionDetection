@@ -78,11 +78,26 @@ class EMR:
             print("---> Couldn't find model")
             # change to argv
 
+    def train(self, training_data, training_labels, testing_data, testing_labels):
+        self.load_model()
+
+        epoch = int(input('input epoch : '))
+        self.model.fit(training_data, training_labels, n_epoch=epoch,
+                       validation_set=(testing_data, testing_labels), snapshot_step=200)
+
+        # Save Model
+        self.model.save('model_' + str(epoch)+'.tflearn')
+
+        # Evaluate Model
+        print('accuracy : ', self.model.evaluate(testing_data, testing_labels))
+        # model.evaluate(testing_data, testing_labels)
+
 
 if __name__ == "__main__":
     print("\n------------Emotion Detection Program------------\n")
     # network = EMR()
-    if(sys.argv[1] == 'videofile'):
-        import videofile
-    elif(sys.argv[1] == 'jsonfile'):
-        import jsonfile
+    import videofile
+    # if(sys.argv[1] == 'videofile'):
+    #     import videofile
+    # elif(sys.argv[1] == 'jsonfile'):
+    #     import jsonfile
