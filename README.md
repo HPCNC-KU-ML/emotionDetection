@@ -9,7 +9,7 @@ consider the output image from last program in each emotion and copy image to im
 
 #Train : python train.py
 
-#run : python model.py videofile
+#run : python model.py 
 
 
 thank you for https://github.com/ahmetozlu/face_recognition_crop
