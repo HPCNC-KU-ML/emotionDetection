@@ -41,7 +41,7 @@ def make_sets():
         for item in training:
             image = cv2.imread(item)  # open image
             newimg = format_image(image)
-            output = np.array([128, 128, 1])
+            # output = np.array([128, 128, 1])
 
             if(len(newimg) == 1):
                 continue

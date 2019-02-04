@@ -1,2 +1,2 @@
-model_checkpoint_path: "/Users/terng/Desktop/INOX-Project/emotionDetection/model_10.tflearn"
-all_model_checkpoint_paths: "/Users/terng/Desktop/INOX-Project/emotionDetection/model_10.tflearn"
+model_checkpoint_path: "/Users/terng/Desktop/INOX-Project/emotionDetection/model_50.tflearn"
+all_model_checkpoint_paths: "/Users/terng/Desktop/INOX-Project/emotionDetection/model_50.tflearn"

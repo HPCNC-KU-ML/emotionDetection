@@ -110,11 +110,20 @@ while 1:
     # compute softmax probabilities
     if(len(new_frame) == 48):
         try:
-            result = network.predict([format_image(frame)])
+            result = network.predict([new_frame])
         except:
             continue
     else:
         result = None
+
+    # # compute softmax probabilities
+    # if(len(new_frame) == 48):
+    #     try:
+    #         result = network.predict([format_image(frame)])
+    #     except:
+    #         continue
+    # else:
+    #     result = None
 
     if result is not None:
         # write the different emotions and have a bar to indicate probabilities for each class
@@ -138,6 +147,7 @@ while 1:
             print('time :{} emotion {}'.format(
                 frame_number/fps, EMOTIONS[maxindex2]))
 
+            # Add result to json file
             data['emotion'].append({
                 'emotion': EMOTIONS[maxindex2],
                 'time': str(frame_number/fps)
