@@ -72,16 +72,16 @@ class EMR:
         return self.model.predict(image)
 
     def load_model(self):
-        if isfile('model.tflearn30.meta'):
-            self.model.load('model.tflearn30')
+        if isfile('model_50.tflearn.meta'):
+            self.model.load('model_50.tflearn')
         else:
             print("---> Couldn't find model")
             # change to argv
 
-    def train(self, training_data, training_labels, testing_data, testing_labels):
+    def train(self, training_data, training_labels, testing_data, testing_labels, epoch):
         self.load_model()
 
-        epoch = int(input('input epoch : '))
+        # epoch = int(input('input epoch : '))
         self.model.fit(training_data, training_labels, n_epoch=epoch,
                        validation_set=(testing_data, testing_labels), snapshot_step=200)
 

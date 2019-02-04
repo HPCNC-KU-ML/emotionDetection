@@ -147,6 +147,11 @@ def format_image(image):
 # # Create Training set and Testing Set
 training_data, training_labels, testing_data, testing_labels = make_sets()
 
+try:
+    epoch = int(sys.argv[2])
+except:
+    epoch = 50
+
 # # Convert to numpy array
 training_data = np.array(training_data)
 training_labels = np.array(training_labels)
@@ -157,7 +162,8 @@ testing_labels = np.array(testing_labels)
 network = EMR()
 network.build_network()
 
-network.train(training_data, training_labels, testing_data, testing_labels)
+network.train(training_data, training_labels,
+              testing_data, testing_labels, epoch)
 
 # # Create NN Model
 # network = tflearn.input_data(shape=[None, 48, 48, 1])

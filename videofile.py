@@ -2,6 +2,7 @@ import cv2
 import sys
 import numpy as np
 from model import EMR
+import json
 
 # prevents opencl usage and unnecessary logging messages
 cv2.ocl.setUseOpenCL(False)
@@ -59,8 +60,14 @@ def format_image(image):
 network = EMR()
 network.build_network()
 
-name = input('Input videoname (abc.xyz) : ')
-name = './' + name
+# name = input('Input videoname (abc.xyz) : ')
+try:
+    name = sys.argv[2]
+except:
+    print('please fill the videoname in input_folder')
+    exit()
+
+name = './input_video/' + name
 
 cap = cv2.VideoCapture(name)
 
