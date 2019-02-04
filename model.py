@@ -74,6 +74,8 @@ class EMR:
     def load_model(self):
         if isfile('model_50.tflearn.meta'):
             self.model.load('model_50.tflearn')
+        elif isfile('model_100.tflearn.meta'):
+            self.model.load('model_100.tflearn')
         else:
             print("---> Couldn't find model")
             # change to argv

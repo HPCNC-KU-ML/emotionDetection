@@ -3,7 +3,6 @@ import sys
 import face_recognition
 import cv2
 import os
-from utils import create_csv
 
 
 current_path = os.getcwd()
@@ -11,7 +10,7 @@ current_path = os.getcwd()
 # Open the input movie file
 video_name = input('input video name in video dir (sam1.mp4) : ')
 video_name
-video_des = 'video/'+video_name
+video_des = 'input_video/'+video_name
 
 input_movie = cv2.VideoCapture(video_des)
 length = int(input_movie.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -61,7 +60,7 @@ while True:
     # Quit when the input video file ends
     if not ret:
         break
-    if(frame_number % 4 == 0):
+    if(frame_number % 1 == 0):
         # Find all the faces and face encodings in the current frame of video
         face_locations = face_recognition.face_locations(frame)
         face_encodings = face_recognition.face_encodings(frame, face_locations)

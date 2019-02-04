@@ -148,7 +148,7 @@ def format_image(image):
 training_data, training_labels, testing_data, testing_labels = make_sets()
 
 try:
-    epoch = int(sys.argv[2])
+    epoch = int(sys.argv[1])
 except:
     epoch = 50
 

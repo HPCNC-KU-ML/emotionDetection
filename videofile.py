@@ -62,9 +62,10 @@ network.build_network()
 
 # name = input('Input videoname (abc.xyz) : ')
 try:
-    name = sys.argv[2]
+    name = sys.argv[1]
+    print(name)
 except:
-    print('please fill the videoname in input_folder')
+    print('please fill the videoname in input_video')
     exit()
 
 name = './input_video/' + name
@@ -144,7 +145,7 @@ while 1:
         if(frame_number % (int(fps/4)) == 0):
             maxindex2 = np.argmax(sum)
             sum = [0, 0, 0, 0, 0]
-            print('time :{} emotion {}'.format(
+            print('time :{%.2f} emotion {}'.format(
                 frame_number/fps, EMOTIONS[maxindex2]))
 
             # Add result to json file
