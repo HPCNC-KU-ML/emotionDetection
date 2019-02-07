@@ -60,7 +60,7 @@ while True:
     # Quit when the input video file ends
     if not ret:
         break
-    if(frame_number % 1 == 0):
+    if(frame_number % 2 == 0):
         # Find all the faces and face encodings in the current frame of video
         face_locations = face_recognition.face_locations(frame)
         face_encodings = face_recognition.face_encodings(frame, face_locations)
@@ -98,7 +98,7 @@ while True:
 
             elif(name == name2):
                 cv2.imwrite("./face_database/" + name2 + "/" + name2 + video_name.split('.')[0] +
-                            str(count)+".png", crop_img)
+                            str(count1)+".png", crop_img)
                 count1 = count1 + 1
             # Draw a label with a name below the face
             cv2.rectangle(frame, (left-10, bottom+10 - 35),
