@@ -31,9 +31,11 @@ EMOTIONS = ['angry', 'happy', 'neutral', 'sad', 'scared']
 
 def get_files():
     files = glob.glob("./input_picture/*")
-    input_data = []
 
-    data = files[:int(len(files))]
+    input_data = []
+    input_name = []
+
+    data = files
     for item in data:
         image = cv2.imread(item)  # open image
         newimg = format_image(image)
@@ -41,8 +43,9 @@ def get_files():
         if(len(newimg) == 1):
             continue
         input_data.append(newimg)
+        input_name.append(item)
 
-    return input_data
+    return input_data, input_name
 
 
 def format_image(image):
@@ -88,20 +91,34 @@ def format_image(image):
 
 
 # # Create Training set and Testing Set
-data = get_files()
+data, file_name = get_files()
 
 network = EMR()
 network.build_network()
 
-for item in data:
-    if(len(item) == 48):
-        try:
-            result = network.predict([item])
-        except:
-            continue
-    else:
-        result = None
+# for item in data:
+#     try:
+#         result = network.predict([item])
+#         maxindex = np.argmax(result[0])
+#         # print(result[0])
+#         print(EMOTIONS[maxindex])
+#     except:
+#         result = None
+#         continue
 
-if result is not None:
-    maxindex = np.argmax(result[0])
-    print(EMOTIONS[maxindex])
+ind = [0, 0, 0, 0, 0]
+
+for i in range(len(data)):
+    try:
+        result = network.predict([data[i]])
+        name = file_name[i]
+        # print(name)
+        maxindex = np.argmax(result[0])
+        # print(result[0])
+        # print(EMOTIONS[maxindex])
+        ind[maxindex] += 1
+        os.rename(name,
+                  "./output_picture/"+str(EMOTIONS[maxindex]+str(ind[maxindex]))+'.PNG')
+    except:
+        result = None
+        continue
