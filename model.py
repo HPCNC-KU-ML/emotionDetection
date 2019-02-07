@@ -76,6 +76,8 @@ class EMR:
             self.model.load('model_50.tflearn')
         elif isfile('model_100.tflearn.meta'):
             self.model.load('model_100.tflearn')
+        elif isfile('model_10.tflearn.meta'):
+            self.model.load('model_10.tflearn')
         else:
             print("---> Couldn't find model")
             # change to argv
@@ -98,8 +100,10 @@ class EMR:
 if __name__ == "__main__":
     print("\n------------Emotion Detection Program------------\n")
     # network = EMR()
-    import videofile
-    # if(sys.argv[1] == 'videofile'):
-    #     import videofile
+    # import videofile
+    if(sys.argv[1] == 'videofile'):
+        import videofile
+    if(sys.argv[1] == 'picture'):
+        import picture
     # elif(sys.argv[1] == 'jsonfile'):
     #     import jsonfile
